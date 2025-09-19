@@ -4,7 +4,7 @@ import Header from './components/Header'
 import FileDisplay from './components/FileDisplay'
 import Information from './components/Information'
 import Transcribing from './components/Transcribing'
-import NeatBackground from './components/Neatbackground'
+import MovableNeatGradient from "./components/MovableNeatGradient";
 import { MessageTypes } from './utils/presets'
 
 function App() {
@@ -72,10 +72,11 @@ function App() {
   }
 
   return (
-    <div className='flex flex-col min-h-screen bg-black text-white w-full relative'>
-      {/* Neat background */}
-      <NeatBackground />
+    <div className='flex flex-col min-h-screen w-full relative'>
+      {/* Neat Gradient Background */}
+      <MovableNeatGradient />
 
+      {/* Main App Content */}
       <section className='flex flex-col flex-1 max-w-[1000px] mx-auto w-full px-4 sm:px-6 relative z-10'>
         <Header dark />
         {output ? (
