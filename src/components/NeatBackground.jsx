@@ -31,7 +31,7 @@ const config = {
   yOffset: 0,
 };
 
-export default function NeatBackground() {
+export default function Neatbackground() {
   const canvasRef = useRef(null);
   const neatInstance = useRef(null);
 
