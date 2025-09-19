@@ -4,13 +4,13 @@ import Header from './components/Header'
 import FileDisplay from './components/FileDisplay'
 import Information from './components/Information'
 import Transcribing from './components/Transcribing'
+import NeatBackground from './components/Neatbackground'
 import { MessageTypes } from './utils/presets'
 
 function App() {
   const [file, setFile] = useState(null)
   const [audioStream, setAudioStream] = useState(null)
   const [output, setOutput] = useState(null)
-  const [downloading, setDownloading] = useState(false)
   const [loading, setLoading] = useState(false)
   const [finished, setFinished] = useState(false)
 
@@ -30,69 +30,74 @@ function App() {
       })
     }
 
-    const onMessageReceived = async (e) => {
+    const onMessageReceived = (e) => {
       switch (e.data.type) {
         case 'DOWNLOADING':
-          setDownloading(true)
           console.log('DOWNLOADING')
-          break;
+          break
         case 'LOADING':
           setLoading(true)
           console.log('LOADING')
-          break;
+          break
         case 'RESULT':
           setOutput(e.data.results)
           console.log(e.data.results)
-          break;
+          break
         case 'INFERENCE_DONE':
           setFinished(true)
-          console.log("DONE")
-          break;
+          console.log('DONE')
+          break
       }
     }
 
     worker.current.addEventListener('message', onMessageReceived)
-
     return () => worker.current.removeEventListener('message', onMessageReceived)
-  })
+  }, [])
 
   async function readAudioFrom(file) {
-    const sampling_rate = 16000
-    const audioCTX = new AudioContext({ sampleRate: sampling_rate })
+    const audioCTX = new AudioContext({ sampleRate: 16000 })
     const response = await file.arrayBuffer()
     const decoded = await audioCTX.decodeAudioData(response)
-    const audio = decoded.getChannelData(0)
-    return audio
+    return decoded.getChannelData(0)
   }
 
   async function handleFormSubmission() {
-    if (!file && !audioStream) { return }
-
-    let audio = await readAudioFrom(file ? file : audioStream)
-    const model_name = `openai/whisper-tiny.en`
-
+    if (!file && !audioStream) return
+    const audio = await readAudioFrom(file || audioStream)
     worker.current.postMessage({
       type: MessageTypes.INFERENCE_REQUEST,
       audio,
-      model_name
+      model_name: 'openai/whisper-tiny.en'
     })
   }
 
   return (
-    <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
-      <section className='min-h-screen flex flex-col'>
-        <Header />
+    <div className='flex flex-col min-h-screen bg-black text-white w-full relative'>
+      {/* Neat background */}
+      <NeatBackground />
+
+      <section className='flex flex-col flex-1 max-w-[1000px] mx-auto w-full px-4 sm:px-6 relative z-10'>
+        <Header dark />
         {output ? (
-          <Information output={output} finished={finished}/>
+          <Information output={output} finished={finished} dark />
         ) : loading ? (
-          <Transcribing />
+          <Transcribing dark />
         ) : isAudioAvailable ? (
-          <FileDisplay handleFormSubmission={handleFormSubmission} handleAudioReset={handleAudioReset} file={file} audioStream={audioStream} />
+          <FileDisplay
+            handleFormSubmission={handleFormSubmission}
+            handleAudioReset={handleAudioReset}
+            file={file}
+            audioStream={audioStream}
+            dark
+          />
         ) : (
-          <HomePage setFile={setFile} setAudioStream={setAudioStream} />
+          <HomePage setFile={setFile} setAudioStream={setAudioStream} dark />
         )}
       </section>
-      <footer></footer>
+
+      <footer className='text-center text-slate-500 py-4 text-sm relative z-10'>
+        hehe, thank you!
+      </footer>
     </div>
   )
 }

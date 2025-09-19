@@ -4,6 +4,11 @@
 
 * {
   font-family: 'Open Sans', sans-serif;
+  color: #fff; /* Default text color white */
+}
+
+body {
+  background-color: #0a0a0a; /* Dark background for the app */
 }
 
 h1,
@@ -11,15 +16,19 @@ h2,
 h3,
 .bold {
   font-family: 'Poppins', sans-serif;
+  color: #fff; /* Headings in white */
 }
 
+/* Remove blue shadows, replace with subtle white/gray glow */
 .blueShadow {
-  box-shadow: 3px 3px 0 0 #93c5fd;
+  box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
 }
 
+/* Special button styling for dark mode */
 .specialBtn {
-  background: white;
-  box-shadow: 0px 14px 55px rgba(96, 165, 255, 0.35);
+  background: #111; /* Dark button */
+  box-shadow: 0px 10px 40px rgba(255, 255, 255, 0.1);
+  color: #fff;
   transition-duration: 200ms;
 }
 
@@ -27,9 +36,11 @@ h3,
   opacity: 0.8;
 }
 
+/* Loading bars styling for dark mode */
 .loading {
   animation: width 5s linear infinite;
   margin-right: auto;
+  background-color: #555; /* Dark gray bars */
 }
 
 .loading1 {
@@ -40,16 +51,28 @@ h3,
   animation-delay: -2s;
 }
 
+/* Optional: make text in FileDisplay/Input stand out */
+input,
+label {
+  color: #eee;
+}
+
+/* Keyframes remain the same */
 @keyframes width {
-  0%{width: 100%;}
-  10%{width: 73%;}
-  20%{width: 35%;}
-  30%{width: 37%;}
-  40%{width: 48%;}
-  50%{width: 65%;}
-  60%{width: 46%;}
-  70%{width: 38%;}
-  80%{width: 66%;}
-  90%{width: 76%;}
-  100%{width: 100%;}
+  0% { width: 100%; }
+  10% { width: 73%; }
+  20% { width: 35%; }
+  30% { width: 37%; }
+  40% { width: 48%; }
+  50% { width: 65%; }
+  60% { width: 46%; }
+  70% { width: 38%; }
+  80% { width: 66%; }
+  90% { width: 76%; }
+  100% { width: 100%; }
+}
+
+.stroke-text {
+  -webkit-text-stroke: 0.5px black; /* thickness and color */
+  color: white; /* fill color */
 }
